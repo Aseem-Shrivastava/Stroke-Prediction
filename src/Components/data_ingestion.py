@@ -1,26 +1,61 @@
-from pathlib import Path
-
-import typer
+from abc import ABC, abstractmethod
 from logging_config import logger
-from tqdm import tqdm
-
-from src.config import PROCESSED_DATA_DIR, RAW_DATA_DIR
-
-
-def main(
-    # ---- REPLACE DEFAULT PATHS AS APPROPRIATE ----
-    input_path: Path = RAW_DATA_DIR / "dataset.csv",
-    output_path: Path = PROCESSED_DATA_DIR / "dataset.csv",
-    # ----------------------------------------------
-):
-    # ---- REPLACE THIS WITH YOUR OWN CODE ----
-    logger.info("Processing dataset...")
-    for i in tqdm(range(10), total=10):
-        if i == 5:
-            logger.info("Something happened for iteration 5.")
-    logger.success("Processing dataset complete.")
-    # -----------------------------------------
+import pandas as pd
+from pathlib import Path
+from src.config import EXTRACTED_DATA_DIR
+import zipfile
 
 
-if __name__ == "__main__":
-    ....
+# Abstract class for data ingestor
+class DataIngestor(ABC):
+    output_dir: Path = EXTRACTED_DATA_DIR
+
+    @abstractmethod
+    def ingest(self, filepath: str) -> pd.DataFrame:
+        """Abstract method to ingest data from a given file."""
+        pass
+
+
+# Concrete class for zip ingestor
+class ZipDataIngestor(DataIngestor):
+    def ingest(self, filepath: str) -> pd.DataFrame:
+        """Extracts a .zip file and returns the content as a pandas DataFrame."""
+        if not filepath.endswith(".zip"):
+            raise ValueError("The provide file is not a .zip file.")
+
+        with zipfile.ZipFile(filepath, "r") as zip_ref:
+            zip_ref.extractall(output_dir)
+
+        extracted_files = os.listdir(output_dir)
+        csv_files = [f for f in extracted_files if f.endswith(".csv")]
+
+        if len(csv_files) == 0:
+            raise FileNotFoundError("No CSV file found in the extracted data.")
+        if len(csv_files) > 1:
+            raise ValueError(
+                "Multiple CSV files found. Please specify which one to use."
+            )
+
+        csv_file_path = os.path.join(output_dir, csv_files[0])
+        df = pd.read_csv(csv_file_path)
+        logger.success("Zipped data ingestion complete.")
+        return df
+
+
+# Implement a Factory to create DataIngestors or return a DataFrame if the input file has ".csv" extension
+class DataIngestorFactory:
+    @staticmethod
+    def get_data_ingestor(filepath: str):
+        logger.info("Data ingestion started...")
+        file_extension = os.path.splittext(filepath)[1]
+        if file_extension == ".csv":
+            df = pd.read_csv(filepath)
+            logger.success("Data ingestion complete.")
+            return df
+        elif file_extension == ".zip":
+            return ZipDataIngestor()
+        else:
+            logger.error(f"No ingestor available for file extension: {file_extension}")
+            raise ValueError(
+                f"No ingestor available for file extension: {file_extension}"
+            )

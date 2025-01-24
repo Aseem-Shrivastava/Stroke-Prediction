@@ -1,26 +1,19 @@
 from pathlib import Path
-
-import typer
+import pandas as pd
 from logging_config import logger
-from tqdm import tqdm
-
-from src.config import PROCESSED_DATA_DIR
-
-
-def main(
-    # ---- REPLACE DEFAULT PATHS AS APPROPRIATE ----
-    input_path: Path = PROCESSED_DATA_DIR / "dataset.csv",
-    output_path: Path = PROCESSED_DATA_DIR / "features.csv",
-    # -----------------------------------------
-):
-    # ---- REPLACE THIS WITH YOUR OWN CODE ----
-    logger.info("Generating features from dataset...")
-    for i in tqdm(range(10), total=10):
-        if i == 5:
-            logger.info("Something happened for iteration 5.")
-    logger.success("Features generation complete.")
-    # -----------------------------------------
+from sklearn.compose import ColumnTransformer
+from sklearn.impute import SimpleImputer
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
 
 
-if __name__ == "__main__":
-    .....
+# Numerical
+# missing data - simple imputer (mean) on bmi
+# scaling of numerical columns - StandardScalar
+# Categorical
+# one hot encoding of categorical columns - OHE
+
+# num_pipeline = Pipeline(steps = [("imputer", SimpleImputer(num_cols) , ("scalar", StandardScalar(num_cols)))
+# cat_pipeline = Pipeline(steps = [(imputer, SimpleImputer(cat_cols)) , ("ohe", OneHotEncoder(cat_cols)))
+
+# preprocessor = ColumnTransformer([("num_pipeline", num_pipeline, num_cols), ("cat_pipeline", cat_pipeline, cat_columns)])

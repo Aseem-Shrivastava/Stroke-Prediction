@@ -1,10 +1,12 @@
 # Stroke Prediction
 
-<a target="_blank" href="https://cookiecutter-data-science.drivendata.org/">
-    <img src="https://img.shields.io/badge/CCDS-Project%20template-328F97?logo=cookiecutter" />
-</a>
+Machine learning model to predict stroke incidences.
 
-Using machine learning models to predict stroke incidences
+Highlights:
+1. Thorough data exploration and insights
+2. Structured data processing following modular coding principles
+3. Integration of MLOps practices (MLflow, logging, training and testing pipelines)
+
 
 ## Project Organization
 
@@ -12,24 +14,27 @@ Using machine learning models to predict stroke incidences
 ├── LICENSE            <- Open-source license if one is chosen
 ├── Makefile           <- Makefile with convenience commands like `make data` or `make train`
 ├── README.md          <- The top-level README for developers using this project.
+│
+├── analysis           
+│   ├── EDA.ipynb           <- Exploratory data analysis (modular approach)
+│   └── analysis_src        <- Source code for packages used during exploratory data analysis.
+│       ├── __init__.py 
+│       ├── basic_data_inspection.py
+│       ├── bivariate_analysis.py
+│       ├── missing_values_analysis.py
+│       ├── multivariate_analysis.py
+│       └── univariate_analysis.py
+│
 ├── data
 │   ├── external       <- Data from third party sources.
 │   ├── interim        <- Intermediate data that has been transformed.
 │   ├── processed      <- The final, canonical data sets for modeling.
 │   └── raw            <- The original, immutable data dump.
 │
-├── docs               <- A default mkdocs project; see www.mkdocs.org for details
-│
 ├── models             <- Trained and serialized models, model predictions, or model summaries
-│
-├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-│                         the creator's initials, and a short `-` delimited description, e.g.
-│                         `1.0-jqp-initial-data-exploration`.
 │
 ├── pyproject.toml     <- Project configuration file with package metadata for 
 │                         src and configuration for tools like black
-│
-├── references         <- Data dictionaries, manuals, and all other explanatory materials.
 │
 ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
 │   └── figures        <- Generated graphics and figures to be used in reporting

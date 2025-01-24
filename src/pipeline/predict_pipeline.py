@@ -1,8 +1,6 @@
 from pathlib import Path
 
-import typer
 from logging_config import logger
-from tqdm import tqdm
 
 from src.config import MODELS_DIR, PROCESSED_DATA_DIR
 
@@ -13,13 +11,6 @@ def main(
     predictions_path: Path = PROCESSED_DATA_DIR / "test_predictions.csv",
     # -----------------------------------------
 ):
-    # ---- REPLACE THIS WITH YOUR OWN CODE ----
-    logger.info("Performing inference for model...")
-    for i in tqdm(range(10), total=10):
-        if i == 5:
-            logger.info("Something happened for iteration 5.")
-    logger.success("Inference complete.")
-    # -----------------------------------------
 
 
 if __name__ == "__main__":
