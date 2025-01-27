@@ -1,42 +1,33 @@
 from pathlib import Path
 
-from logging_config import logger
-
-
-from src.config import MODELS_DIR, PROCESSED_DATA_DIR
-
-
-input_path: Path = (RAW_DATA_DIR / "dataset.csv",)
-features_path: Path = (PROCESSED_DATA_DIR / "features.csv",)
-labels_path: Path = (PROCESSED_DATA_DIR / "labels.csv",)
-model_path: Path = (MODELS_DIR / "model.pkl",)
+from src.components.data_ingestion import DataIngestorFactory
+from src.components.data_splitter import DataSplitter, StratifiedTrainTestSplitStrategy
+from src.components.data_transformation import SimpleDataTransformation
+from src.components.model_trainer import HyperParameterTuned_ModelBuilder
 
 
 def ml_pipeline():
     """Define an end-to-end machine learning pipeline."""
 
     # Data Ingestion Step
-
-    raw_data = data_ingestion_step(
-        file_path="data/raw/healthcare-dataset-stroke-data.csv"
+    df = DataIngestorFactory.data_ingestor(
+        "data/raw/healthcare-dataset-stroke-data.csv"
     )
 
     # Data Splitting Step
-    X_train, X_test, y_train, y_test = data_splitter_step(
-        clean_data, target_column="SalePrice"
-    )
+    data_splitter = DataSplitter(StratifiedTrainTestSplitStrategy())
+    X_train, X_test, y_train, y_test = data_splitter.split(df, target_column="stroke")
 
     # Data Transformation Step
-    engineered_data = feature_engineering_step(
-        filled_data, strategy="log", features=["Gr Liv Area", "SalePrice"]
+    data_transformer = SimpleDataTransformation()
+    X_train_transformed, X_test_transformed = data_transformer.apply_transformation(
+        X_train, X_test
     )
 
-    # Model Training Step
-    model = model_building_step(X_train=X_train, y_train=y_train)
-
-    # Model Evaluation Step
-    evaluation_metrics, mse = model_evaluator_step(
-        trained_model=model, X_test=X_test, y_test=y_test
+    # Model Builder Step
+    model_builder = HyperParameterTuned_ModelBuilder()
+    model = model_builder.build_model(
+        X_train_transformed, X_test_transformed, y_train, y_test
     )
 
     return model

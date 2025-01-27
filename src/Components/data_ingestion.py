@@ -1,8 +1,9 @@
 from abc import ABC, abstractmethod
-from logging_config import logger
+import os
 import pandas as pd
 from pathlib import Path
 from src.config import EXTRACTED_DATA_DIR
+from src.logging_config import logger
 import zipfile
 
 
@@ -42,18 +43,18 @@ class ZipDataIngestor(DataIngestor):
         return df
 
 
-# Implement a Factory to create DataIngestors or return a DataFrame if the input file has ".csv" extension
+# Implement a Factory to create DataIngestors and subsequently return a DataFrame
 class DataIngestorFactory:
     @staticmethod
-    def get_data_ingestor(filepath: str):
+    def data_ingestor(filepath: str):
         logger.info("Data ingestion started...")
-        file_extension = os.path.splittext(filepath)[1]
+        file_extension = os.path.splitext(filepath)[1]
         if file_extension == ".csv":
             df = pd.read_csv(filepath)
             logger.success("Data ingestion complete.")
             return df
         elif file_extension == ".zip":
-            return ZipDataIngestor()
+            return ZipDataIngestor.ingest(filepath)
         else:
             logger.error(f"No ingestor available for file extension: {file_extension}")
             raise ValueError(

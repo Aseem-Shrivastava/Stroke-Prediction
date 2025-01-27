@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
-from logging_config import logger
 import pandas as pd
 from sklearn.model_selection import train_test_split
+from src.logging_config import logger
 
 
 # Abstract Base Class for Data Splitting Strategy
@@ -16,7 +16,7 @@ class DataSplittingStrategy(ABC):
         target_column (str): The name of the target column.
 
         Returns:
-        X_train, X_test, y_train, y_test: The training and testing splits for features and target.
+        X_train, y_train, X_test, y_test: The training and testing splits for features and target.
         """
         pass
 
@@ -28,6 +28,7 @@ class SimpleTrainTestSplitStrategy(DataSplittingStrategy):
         self.random_state = random_state
 
     def split_data(self, df: pd.DataFrame, target_column: str):
+        df = df.drop(columns="id")
         X = df.drop(columns=[target_column])
         y = df[target_column]
 
@@ -35,7 +36,7 @@ class SimpleTrainTestSplitStrategy(DataSplittingStrategy):
             X, y, test_size=self.test_size, random_state=self.random_state
         )
         logger.success("Simple splitting of data complete")
-        return X_train, X_test, y_train, y_test
+        return X_train, y_train, X_test, y_test
 
 
 class StratifiedTrainTestSplitStrategy(DataSplittingStrategy):
@@ -44,7 +45,8 @@ class StratifiedTrainTestSplitStrategy(DataSplittingStrategy):
         self.random_state = random_state
 
     def split_data(self, df: pd.DataFrame, target_column: str):
-        X = df.drop(column=[target_column])
+        df = df.drop(columns="id")
+        X = df.drop(columns=[target_column])
         y = df[target_column]
 
         X_train, y_train, X_test, y_test = train_test_split(
@@ -55,7 +57,7 @@ class StratifiedTrainTestSplitStrategy(DataSplittingStrategy):
             random_state=self.random_state,
         )
         logger.success("Stratified splitting of data complete")
-        return X_train, X_test, y_train, y_test
+        return X_train, y_train, X_test, y_test
 
 
 # Context Class for Data Splitting

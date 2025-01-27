@@ -18,7 +18,9 @@ dependencies:
   - pandas
   - scikit-learn
   - seaborn
+  - xgboost
   - pip:
+    - imbalanced-learn
     - python-dotenv
     - mkdocs
     - -e .
