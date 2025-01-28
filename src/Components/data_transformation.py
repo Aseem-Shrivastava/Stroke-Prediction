@@ -1,10 +1,14 @@
 from abc import ABC, abstractmethod
+import os
 import pandas as pd
+from pathlib import Path
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from src.config import ARTIFACTS_DIR
 from src.logging_config import logger
+from src.utils import save_object
 
 
 class DataTransformation(ABC):
@@ -62,6 +66,13 @@ class SimpleDataTransformation(DataTransformation):
 
         X_train_transformed = preprocessor.fit_transform(X_train)
         X_test_transformed = preprocessor.transform(X_test)
+
+        # Saving preprocessor for later use (e.g. transformation of test data)
+        artifact_dir: Path = ARTIFACTS_DIR
+        artifact_dir.mkdir(parents=True, exist_ok=True)
+        artifact_file_path = os.path.join(artifact_dir, "preprocessor.pkl")
+        save_object(file_path=artifact_file_path, obj=preprocessor)
+        logger.info("Saved preprocessing object.")
 
         feature_names = preprocessor.get_feature_names_out()
 

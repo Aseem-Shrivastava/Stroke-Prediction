@@ -1,5 +1,3 @@
-from pathlib import Path
-
 from src.components.data_ingestion import DataIngestorFactory
 from src.components.data_splitter import DataSplitter, StratifiedTrainTestSplitStrategy
 from src.components.data_transformation import SimpleDataTransformation

@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 import os
 import pandas as pd
 from pathlib import Path
-import pickle
 
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
@@ -12,6 +11,7 @@ from sklearn.tree import DecisionTreeClassifier
 
 from src.config import MODELS_DIR
 from src.logging_config import logger
+from src.utils import save_object
 
 from imblearn.over_sampling import SMOTE
 from xgboost import XGBClassifier
@@ -146,9 +146,7 @@ class HyperParameterTuned_ModelBuilder(ModelBuilder):
         model_dir: Path = MODELS_DIR
         model_dir.mkdir(parents=True, exist_ok=True)
         model_file_path = os.path.join(model_dir, "best_tuned_model.pkl")
-
-        with open(model_file_path, "wb") as file:
-            pickle.dump(best_tuned_model, file)
+        save_object(file_path=model_file_path, obj=best_tuned_model)
 
         print(f"Trained {best_model} model saved to {model_file_path}")
 

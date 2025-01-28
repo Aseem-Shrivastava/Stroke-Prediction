@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stroke Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            margin-top: 20px;
+        }
+        .mb-3 {
+            margin-bottom: 15px;
+        }
+        .form-label {
+            font-size: 16px;
+            font-weight: bold;
+            color: #555;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .prediction {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Stroke Predictor</h1>
+        <h2>Enter Individual Details</h2>
+
+        <form action="{{ url_for('predict_datapoint') }}" method="post">
+            <!-- Gender -->
+            <div class="mb-3">
+                <label class="form-label">Gender</label>
+                <select class="form-control" name="gender" required>
+                    <option class="placeholder" selected disabled value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+
+            <!-- Age -->
+            <div class="mb-3">
+                <label class="form-label">Age</label>
+                <input class="form-control" type="number" name="age" placeholder="Enter your age" min="0" step="0.1" required />
+            </div>
+
+            <!-- Hypertension -->
+            <div class="mb-3">
+                <label class="form-label">Hypertension</label>
+                <select class="form-control" name="hypertension" required>
+                    <option class="placeholder" selected disabled value="">Select Hypertension</option>
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+
+            <!-- Heart Disease -->
+            <div class="mb-3">
+                <label class="form-label">Heart Disease</label>
+                <select class="form-control" name="heart_disease" required>
+                    <option class="placeholder" selected disabled value="">Select Heart Disease</option>
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+
+            <!-- Ever Married -->
+            <div class="mb-3">
+                <label class="form-label">Ever Married</label>
+                <select class="form-control" name="ever_married" required>
+                    <option class="placeholder" selected disabled value="">Select Marital Status</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+
+            <!-- Work Type -->
+            <div class="mb-3">
+                <label class="form-label">Work Type</label>
+                <select class="form-control" name="work_type" required>
+                    <option class="placeholder" selected disabled value="">Select Work Type</option>
+                    <option value="Private">Private</option>
+                    <option value="Self-employed">Self-employed</option>
+                    <option value="Govt_job">Government Job</option>
+                    <option value="children">Children</option>
+                    <option value="Never_worked">Never Worked</option>
+                </select>
+            </div>
+
+            <!-- Residence Type -->
+            <div class="mb-3">
+                <label class="form-label">Residence Type</label>
+                <select class="form-control" name="residence_type" required>
+                    <option class="placeholder" selected disabled value="">Select Residence Type</option>
+                    <option value="Urban">Urban</option>
+                    <option value="Rural">Rural</option>
+                </select>
+            </div>
+
+            <!-- Average Glucose Level -->
+            <div class="mb-3">
+                <label class="form-label">Average Glucose Level</label>
+                <input class="form-control" type="number" name="avg_glucose_level" placeholder="Enter average glucose level" min="0" step="0.01" required />
+            </div>
+
+            <!-- BMI -->
+            <div class="mb-3">
+                <label class="form-label">BMI</label>
+                <input class="form-control" type="number" name="bmi" placeholder="Enter BMI" min="0" step="0.1" required/>
+            </div>
+
+            <!-- Smoking Status -->
+            <div class="mb-3">
+                <label class="form-label">Smoking Status</label>
+                <select class="form-control" name="smoking_status" required>
+                    <option class="placeholder" selected disabled value="">Select Smoking Status</option>
+                    <option value="never smoked">Never Smoked</option>
+                    <option value="formerly smoked">Formerly Smoked</option>
+                    <option value="smokes">Smokes</option>
+                    <option value="Unknown">Unknown</option>
+                </select>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="mb-3">
+                <input class="btn" type="submit" value="Predict Stroke" />
+            </div>
+        </form>
+
+        <div class="prediction">
+            <h2>The prediction is: {{ results }}</h2>
+        </div>
+    </div>
+</body>
+</html>

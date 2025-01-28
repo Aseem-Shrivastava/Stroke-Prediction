@@ -25,9 +25,9 @@ class ZipDataIngestor(DataIngestor):
             raise ValueError("The provide file is not a .zip file.")
 
         with zipfile.ZipFile(filepath, "r") as zip_ref:
-            zip_ref.extractall(output_dir)
+            zip_ref.extractall(self.output_dir)
 
-        extracted_files = os.listdir(output_dir)
+        extracted_files = os.listdir(self.output_dir)
         csv_files = [f for f in extracted_files if f.endswith(".csv")]
 
         if len(csv_files) == 0:
@@ -37,7 +37,7 @@ class ZipDataIngestor(DataIngestor):
                 "Multiple CSV files found. Please specify which one to use."
             )
 
-        csv_file_path = os.path.join(output_dir, csv_files[0])
+        csv_file_path = os.path.join(self.output_dir, csv_files[0])
         df = pd.read_csv(csv_file_path)
         logger.success("Zipped data ingestion complete.")
         return df
