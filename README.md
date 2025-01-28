@@ -5,19 +5,16 @@ Machine learning model to predict stroke incidences.
 Highlights:
 1. Thorough data exploration and insights
 2. Structured data processing following modular coding principles
-3. Integration of MLOps practices (MLflow, logging, training and testing pipelines)
+3. Integration of MLOps practices (Process logging, training and testing pipelines)
+4. Deployment using simple Flask application
 
 
 ## Project Organization
 
 ```
-├── LICENSE            <- Open-source license if one is chosen
-├── Makefile           <- Makefile with convenience commands like `make data` or `make train`
-├── README.md          <- The top-level README for developers using this project.
-│
 ├── analysis           
-│   ├── EDA.ipynb           <- Exploratory data analysis (modular approach)
-│   └── analysis_src        <- Source code for packages used during exploratory data analysis.
+│   ├── EDA.ipynb                                   <- Exploratory data analysis (modular approach)
+│   └── analysis_src                                <- Source code for packages used during exploratory data analysis
 │       ├── __init__.py 
 │       ├── basic_data_inspection.py
 │       ├── bivariate_analysis.py
@@ -25,44 +22,49 @@ Highlights:
 │       ├── multivariate_analysis.py
 │       └── univariate_analysis.py
 │
+├── artifacts                   
+│   └── preprocessor.pkl                            <- Preporcessor used for data transformation for training and test dataset
+│
 ├── data
-│   ├── external       <- Data from third party sources.
-│   ├── interim        <- Intermediate data that has been transformed.
-│   ├── processed      <- The final, canonical data sets for modeling.
-│   └── raw            <- The original, immutable data dump.
+│   ├── extracted                                   <- Data extracted from raw data files (incase of zipped raw data)
+│   └── raw                                         <- The original, immutable data dump
+│       └── healthcare-dataset-stroke-data.csv
 │
-├── models             <- Trained and serialized models, model predictions, or model summaries
+├── logs                                            <- Process logs for model training and predictions
 │
-├── pyproject.toml     <- Project configuration file with package metadata for 
-│                         src and configuration for tools like black
+├── models                                          
+│   └── best_tuned_model.pkl                        <- Hyperparameter-tuned model used for prediction
 │
-├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-│   └── figures        <- Generated graphics and figures to be used in reporting
+├── src                                             <- Source code for use in this project (modular approach)
+│   │
+│   ├── components                                  <- Code for packages used during model training
+│   │   ├── __init__.py 
+│   │   ├── data_ingestion.py                
+│   │   ├── data_splitter.py 
+│   │   ├── data_transformation.py 
+│   │   └── model_trainer.py
+│   │
+│   ├── pipeline                
+│   │   ├── __init__.py 
+│   │   ├── predict_pipeline.py                     <- Code to run model inference with trained models          
+│   │   └── train_pipeline.py                       <- Code to test classification models and hyperparameter tune best fitted model
+│   │
+│   ├── __init__.py                                 <- Makes src a Python module
+│   ├── config.py                                   <- Store useful variables and configuration
+│   ├── logging_config.py                           <- Store useful variables and configuration for logging
+│   └── utils.py                                    <- Scripts to save or load objects (e.g., preprocessor, trained model)
 │
-├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
-│                         generated with `pip freeze > requirements.txt`
+├── templates                                       <- HTML templates for FLASK application
+│   ├── home.html                           
+│   └── index.html                                    
 │
-├── setup.cfg          <- Configuration file for flake8
-│
-└── src   <- Source code for use in this project.
-    │
-    ├── __init__.py             <- Makes src a Python module
-    │
-    ├── config.py               <- Store useful variables and configuration
-    │
-    │
-    ├── logging_config.py       <- Store useful variables and configuration for logging
-    │
-    ├── dataset.py              <- Scripts to download or generate data
-    │
-    ├── features.py             <- Code to create features for modeling
-    │
-    ├── modeling                
-    │   ├── __init__.py 
-    │   ├── predict.py          <- Code to run model inference with trained models          
-    │   └── train.py            <- Code to train models
-    │
-    └── plots.py                <- Code to create visualizations
+├── app.py                                          <- Simple Flask application that allows users to predict stroke for custom data
+├── environment.yml                                 <- Environment file for reproducing the analysis environment
+├── Makefile                                        <- Makefile with convenience commands like `make requirements`
+├── pyproject.toml                                  <- Project configuration file with package metadata for 
+│                                                   src and configuration for tools like black
+├── README.md                                       <- The top-level README for developers using this project.
+└── setup.cfg                                       <- Configuration file for flake8
 ```
 
 --------

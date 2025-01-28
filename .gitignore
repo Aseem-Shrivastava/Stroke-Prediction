@@ -1,9 +1,3 @@
-# Data
-/data/
-
-# Logs
-/logs/
-
 # Mac OS-specific storage files
 .DS_Store
 
