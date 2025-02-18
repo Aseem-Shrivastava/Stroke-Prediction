@@ -54,7 +54,7 @@ class DataIngestorFactory:
             logger.success("Data ingestion complete.")
             return df
         elif file_extension == ".zip":
-            return ZipDataIngestor.ingest(filepath)
+            return ZipDataIngestor().ingest(filepath)
         else:
             logger.error(f"No ingestor available for file extension: {file_extension}")
             raise ValueError(

@@ -36,7 +36,7 @@ class SimpleTrainTestSplitStrategy(DataSplittingStrategy):
             X, y, test_size=self.test_size, random_state=self.random_state
         )
         logger.success("Simple splitting of data complete")
-        return X_train, y_train, X_test, y_test
+        return X_train, X_test, y_train, y_test
 
 
 class StratifiedTrainTestSplitStrategy(DataSplittingStrategy):
@@ -49,7 +49,7 @@ class StratifiedTrainTestSplitStrategy(DataSplittingStrategy):
         X = df.drop(columns=[target_column])
         y = df[target_column]
 
-        X_train, y_train, X_test, y_test = train_test_split(
+        X_train, X_test, y_train, y_test = train_test_split(
             X,
             y,
             test_size=self.test_size,
@@ -57,7 +57,7 @@ class StratifiedTrainTestSplitStrategy(DataSplittingStrategy):
             random_state=self.random_state,
         )
         logger.success("Stratified splitting of data complete")
-        return X_train, y_train, X_test, y_test
+        return X_train, X_test, y_train, y_test
 
 
 # Context Class for Data Splitting
